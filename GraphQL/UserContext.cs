@@ -6,6 +6,5 @@ namespace aspnetcore_graphql_auth.GraphQL {
     public class UserContext {
         public ClaimsPrincipal User { get; set; }
         public HttpContext HttpContext { get; set; }
-        public AppDbContext DbContext { get; set; }
     }
 }

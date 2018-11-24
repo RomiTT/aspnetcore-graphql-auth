@@ -2,9 +2,11 @@ using aspnetcore_graphql_auth.GraphQL;
 using aspnetcore_graphql_auth.Models;
 using GraphQL.Server;
 using GraphQL.Server.Transports.Subscriptions.Abstractions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace aspnetcore_graphql_auth {
     public static class CustomServiceCollectionExtensions {
@@ -19,9 +21,21 @@ namespace aspnetcore_graphql_auth {
             // Setup DB Context
             //services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("MemoryDB"));
             services.AddDbContext<AppDbContext>(options => options.UseMySql(config.GetConnectionString("MySQL")));
+            return services;
+        }
 
-            var sp = services.BuildServiceProvider();
-            var dbContext = sp.GetService<AppDbContext>();
+        public static IServiceCollection AddCustomGraphQL(this IServiceCollection services, IHostingEnvironment hostingEnvironment) {
+            services.AddGraphQL(options => {
+                    options.EnableMetrics = true;
+                    options.ExposeExceptions = hostingEnvironment.IsDevelopment();
+                })
+                .AddUserContextBuilder(httpContext => new UserContext {
+                    User = httpContext.User,
+                    HttpContext = httpContext
+                })
+                .AddWebSockets()
+                //.AddWebSocketListener()
+                .AddDataLoader();
 
             return services;
         }

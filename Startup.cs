@@ -29,6 +29,7 @@ namespace aspnetcore_graphql_auth {
             services.AddCors();
             services.AddMvc();
             services.AddCustomDbContext(Configuration);
+            services.AddCustomGraphQL(HostingEnvironment);
 
             InitializeLogger();
         }
