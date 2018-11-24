@@ -4,32 +4,42 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 
-namespace aspnetcore_graphql_auth
-{
-  public class Startup {
+namespace aspnetcore_graphql_auth {
+    public class Startup {
         public Startup(IConfiguration configuration, IHostingEnvironment env) {
             Configuration = configuration;
-
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                .Enrich.FromLogContext()
-                .WriteTo.Console()
-                .WriteTo.RollingFile($"{env.ContentRootPath}/log/" + "log-{Date}.txt",
-                    fileSizeLimitBytes : 1_000_000,
-                    shared : true,
-                    flushToDiskInterval : TimeSpan.FromSeconds(1))
-                .CreateLogger();
+            HostingEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
 
+        public IHostingEnvironment HostingEnvironment { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services) { }
+        public void ConfigureServices(IServiceCollection services) {
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            var logLevel = LogEventLevel.Warning;
+            try { logLevel = (LogEventLevel) Enum.Parse(typeof(LogEventLevel), appSettingsSection["LogLevel"]); } catch { }
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", logLevel)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.RollingFile($"{HostingEnvironment.ContentRootPath}/log/" + "log-{Date}.txt",
+                    fileSizeLimitBytes : 1_000_000,
+                    shared : true,
+                    flushToDiskInterval : TimeSpan.FromSeconds(1))
+                .CreateLogger();
+
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
