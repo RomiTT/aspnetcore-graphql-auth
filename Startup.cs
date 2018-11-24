@@ -3,6 +3,7 @@ using aspnetcore_graphql_auth.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -26,12 +27,16 @@ namespace aspnetcore_graphql_auth {
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
+            // Setup DB Context
+            //services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("MemoryDB"));
+            services.AddDbContext<AppDbContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQL")));
+
             var sp = services.BuildServiceProvider();
             var dbContext = sp.GetService<AppDbContext>();
 
             var loggingSection = Configuration.GetSection("Logging");
             var logLevel = LogEventLevel.Warning;
-            try { logLevel = (LogEventLevel) Enum.Parse(typeof(LogEventLevel), loggingSection["Level"]); } catch { }
+            try { logLevel = (LogEventLevel)Enum.Parse(typeof(LogEventLevel), loggingSection["Level"]); } catch { }
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()

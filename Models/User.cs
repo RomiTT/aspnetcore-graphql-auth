@@ -10,6 +10,6 @@ namespace aspnetcore_graphql_auth.Models {
         public string LastName { get; set; }
         public string Username { get; set; }
         public UserRole Role { get; set; }
-        public string Token { get; set; }
+        //public string Token { get; set; }
     }
 }
