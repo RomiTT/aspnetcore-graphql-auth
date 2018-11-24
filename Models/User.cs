@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using aspnetcore_graphql_auth.Authentication;
+using aspnetcore_graphql_auth.GraphQL.Authentication;
 
 namespace aspnetcore_graphql_auth.Models {
     public class User {

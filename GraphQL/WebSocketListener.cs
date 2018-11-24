@@ -1,13 +1,13 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
-using aspnetcore_graphql_auth.Authentication;
+using aspnetcore_graphql_auth.GraphQL.Authentication;
 using GraphQL.Server;
 using GraphQL.Server.Transports.Subscriptions.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 
-namespace aspnetcore_graphql_auth.GraphQL.Extensions {
+namespace aspnetcore_graphql_auth.GraphQL {
     public class WebSocketListener : IOperationMessageListener {
         AppSettings _appSettings;
         bool _isAuthenticated = false;
@@ -58,15 +58,6 @@ namespace aspnetcore_graphql_auth.GraphQL.Extensions {
             catch { }
 
             return false;
-        }
-    }
-
-    public static class ServiceCollectionExtensions {
-        public static IGraphQLBuilder AddWebSocketListener(this IGraphQLBuilder builder) {
-            builder.Services
-                .AddTransient<IOperationMessageListener, WebSocketListener>();
-
-            return builder;
         }
     }
 }

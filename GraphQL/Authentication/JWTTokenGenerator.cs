@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace aspnetcore_graphql_auth.Authentication {
+namespace aspnetcore_graphql_auth.GraphQL.Authentication {
     public static class JWTTokenGenerator {
         public static string Generate(string secret, Claim[] claims, DateTime expires) {
             var tokenHandler = new JwtSecurityTokenHandler();

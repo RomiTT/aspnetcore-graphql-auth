@@ -1,5 +1,5 @@
 using System;
-using aspnetcore_graphql_auth.Authentication;
+using aspnetcore_graphql_auth.GraphQL.Authentication;
 using Microsoft.EntityFrameworkCore;
 
 namespace aspnetcore_graphql_auth.Models {

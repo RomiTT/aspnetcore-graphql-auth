@@ -7,7 +7,7 @@ using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 
-namespace aspnetcore_graphql_auth.Authentication {
+namespace aspnetcore_graphql_auth.GraphQL.Authentication {
     public class AuthenticationFieldType<TSourceType, TReturnType> : FieldType {
         public AuthenticationFieldType() {
             Resolver = new FuncFieldResolver<TSourceType, TReturnType>(context => {

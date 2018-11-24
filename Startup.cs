@@ -26,14 +26,29 @@ namespace aspnetcore_graphql_auth {
         public void ConfigureServices(IServiceCollection services) {
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
+            services.AddCors();
+            services.AddMvc();
+            services.AddCustomDbContext(Configuration);
 
-            // Setup DB Context
-            //services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("MemoryDB"));
-            services.AddDbContext<AppDbContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQL")));
+            InitializeLogger();
+        }
 
-            var sp = services.BuildServiceProvider();
-            var dbContext = sp.GetService<AppDbContext>();
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+            if (env.IsDevelopment()) {
+                app.UseDeveloperExceptionPage();
+            }
+            else {
 
+            }
+
+            app.UseStaticFiles();
+            app.Run(async(context) => {
+                await context.Response.WriteAsync("Hello World!");
+            });
+        }
+
+        private void InitializeLogger() {
             var loggingSection = Configuration.GetSection("Logging");
             var logLevel = LogEventLevel.Warning;
             try { logLevel = (LogEventLevel)Enum.Parse(typeof(LogEventLevel), loggingSection["Level"]); } catch { }
@@ -48,20 +63,6 @@ namespace aspnetcore_graphql_auth {
                     shared : true,
                     flushToDiskInterval : TimeSpan.FromSeconds(1))
                 .CreateLogger();
-
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
-            if (env.IsDevelopment()) {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseStaticFiles();
-
-            app.Run(async(context) => {
-                await context.Response.WriteAsync("Hello World!");
-            });
         }
     }
 }
