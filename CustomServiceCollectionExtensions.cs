@@ -34,7 +34,7 @@ namespace aspnetcore_graphql_auth {
                     HttpContext = httpContext
                 })
                 .AddWebSockets()
-                //.AddWebSocketListener()
+                .AddWebSocketListener()
                 .AddDataLoader();
 
             return services;
