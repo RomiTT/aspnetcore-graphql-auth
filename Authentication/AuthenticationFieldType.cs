@@ -5,6 +5,7 @@ using GraphQL;
 using GraphQL.Resolvers;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Http;
+using Serilog;
 
 namespace aspnetcore_graphql_auth.Authentication {
     public class AuthenticationFieldType<TSourceType, TReturnType> : FieldType {
@@ -40,14 +41,13 @@ namespace aspnetcore_graphql_auth.Authentication {
 
                 var roleClaim = user.FindFirst(ClaimTypes.Role);
                 if (roleClaim != null) {
-                    if (roleClaim.Value == "admin") {
-                        if (context.FieldDefinition.HasRole(UserRole.ADMIN_USER)) {
-                            Console.WriteLine($"Admin User: {emailClaim.Value}");
-                        } else {
-                            httpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
-                            context.Errors.Add(new ExecutionError("Unauthorized request.") { Code = "401" });
-                            return false;
-                        }
+                    var role = (UserRole)Enum.Parse(typeof(UserRole), roleClaim.Value);
+                    if (context.FieldDefinition.HasRole(role)) {
+                        Log.Logger.Information($"{roleClaim.Value}: {emailClaim.Value}");
+                    } else {
+                        httpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                        context.Errors.Add(new ExecutionError("Unauthorized request.") { Code = "401" });
+                        return false;
                     }
                 }
             }

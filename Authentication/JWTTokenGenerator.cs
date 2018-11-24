@@ -17,5 +17,14 @@ namespace aspnetcore_graphql_auth.Authentication {
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+        public static string Generate(string secret, string email, UserRole role, DateTime expires) {
+            var claims = new Claim[] {
+                new Claim(ClaimTypes.Email, email),
+                new Claim(ClaimTypes.Role, role.ToString())
+            };
+
+            return Generate(secret, claims, expires);
+        }
     }
 }
