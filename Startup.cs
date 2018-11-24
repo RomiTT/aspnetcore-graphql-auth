@@ -25,8 +25,9 @@ namespace aspnetcore_graphql_auth {
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
+            var loggingSection = Configuration.GetSection("Logging");
             var logLevel = LogEventLevel.Warning;
-            try { logLevel = (LogEventLevel) Enum.Parse(typeof(LogEventLevel), appSettingsSection["LogLevel"]); } catch { }
+            try { logLevel = (LogEventLevel) Enum.Parse(typeof(LogEventLevel), loggingSection["Level"]); } catch { }
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
@@ -34,7 +35,7 @@ namespace aspnetcore_graphql_auth {
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .WriteTo.RollingFile($"{HostingEnvironment.ContentRootPath}/log/" + "log-{Date}.txt",
-                    fileSizeLimitBytes : 1_000_000,
+                    fileSizeLimitBytes : 100 * 1024 * 1024, // default 1GB
                     shared : true,
                     flushToDiskInterval : TimeSpan.FromSeconds(1))
                 .CreateLogger();
