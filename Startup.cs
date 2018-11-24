@@ -1,4 +1,5 @@
 ﻿using System;
+using aspnetcore_graphql_auth.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +25,9 @@ namespace aspnetcore_graphql_auth {
         public void ConfigureServices(IServiceCollection services) {
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
+
+            var sp = services.BuildServiceProvider();
+            var dbContext = sp.GetService<AppDbContext>();
 
             var loggingSection = Configuration.GetSection("Logging");
             var logLevel = LogEventLevel.Warning;
