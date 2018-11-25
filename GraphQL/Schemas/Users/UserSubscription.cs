@@ -56,8 +56,8 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users {
             AddField(new EventStreamFieldType {
                 Name = "subscribeOnAllEvents",
                     Type = typeof(UserType),
-                    Resolver = new FuncFieldResolver<User>(ResolveUser),
-                    Subscriber = new EventStreamResolver<User>(SubscribeOnAllEvents)
+                    Resolver = new FuncFieldResolver<String>(ResolveString),
+                    Subscriber = new EventStreamResolver<String>(SubscribeOnAllEvents)
             });
 
         }
@@ -65,6 +65,11 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users {
         private User ResolveUser(ResolveFieldContext context) {
             var user = context.Source as User;
             return user;
+        }
+
+        private String ResolveString(ResolveFieldContext context) {
+            var result = context.Source as String;
+            return result;
         }
 
         private IObservable<User> SubscribeOnSignup(ResolveEventStreamContext context) {
@@ -104,7 +109,7 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users {
             return _pubsub.ObservableOnDeleteUser;
         }
 
-        private IObservable<User> SubscribeOnAllEvents(ResolveEventStreamContext context) {
+        private IObservable<String> SubscribeOnAllEvents(ResolveEventStreamContext context) {
             var messageContext = context.UserContext.As<MessageHandlingContext>();
             var email = messageContext.Get<string>("email");
 
