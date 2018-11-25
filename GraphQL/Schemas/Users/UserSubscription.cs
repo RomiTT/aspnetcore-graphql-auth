@@ -16,42 +16,50 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users {
 
             AddField(new EventStreamFieldType {
                 Name = "subscribeOnSignup",
-                Type = typeof(UserType),
-                Resolver = new FuncFieldResolver<User>(ResolveUser),
-                Subscriber = new EventStreamResolver<User>(SubscribeOnSignup)
+                    Type = typeof(UserType),
+                    Resolver = new FuncFieldResolver<User>(ResolveUser),
+                    Subscriber = new EventStreamResolver<User>(SubscribeOnSignup)
             });
 
             AddField(new EventStreamFieldType {
                 Name = "subscribeOnLogin",
-                Type = typeof(UserType),
-                Resolver = new FuncFieldResolver<User>(ResolveUser),
-                Subscriber = new EventStreamResolver<User>(SubscribeOnLogin)
+                    Type = typeof(UserType),
+                    Resolver = new FuncFieldResolver<User>(ResolveUser),
+                    Subscriber = new EventStreamResolver<User>(SubscribeOnLogin)
             });
 
             AddField(new EventStreamFieldType {
                 Name = "subscribeOnLoginByUser",
-                Arguments = new QueryArguments(
-                    new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "email" }
-                ),
+                    Arguments = new QueryArguments(
+                        new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "email" }
+                    ),
 
-                Type = typeof(UserType),
-                Resolver = new FuncFieldResolver<User>(ResolveUser),
-                Subscriber = new EventStreamResolver<User>(SubscribeOnLogin)
+                    Type = typeof(UserType),
+                    Resolver = new FuncFieldResolver<User>(ResolveUser),
+                    Subscriber = new EventStreamResolver<User>(SubscribeOnLogin)
             });
 
             AddField(new EventStreamFieldType {
                 Name = "subscribeOnLogout",
-                Type = typeof(UserType),
-                Resolver = new FuncFieldResolver<User>(ResolveUser),
-                Subscriber = new EventStreamResolver<User>(SubscribeOnLogout)
+                    Type = typeof(UserType),
+                    Resolver = new FuncFieldResolver<User>(ResolveUser),
+                    Subscriber = new EventStreamResolver<User>(SubscribeOnLogout)
             });
 
             AddField(new EventStreamFieldType {
                 Name = "subscribeOnDeleteUser",
-                Type = typeof(UserType),
-                Resolver = new FuncFieldResolver<User>(ResolveUser),
-                Subscriber = new EventStreamResolver<User>(SubscribeOnDeleteUser)
+                    Type = typeof(UserType),
+                    Resolver = new FuncFieldResolver<User>(ResolveUser),
+                    Subscriber = new EventStreamResolver<User>(SubscribeOnDeleteUser)
             });
+
+            AddField(new EventStreamFieldType {
+                Name = "subscribeOnAllEvents",
+                    Type = typeof(UserType),
+                    Resolver = new FuncFieldResolver<User>(ResolveUser),
+                    Subscriber = new EventStreamResolver<User>(SubscribeOnAllEvents)
+            });
+
         }
 
         private User ResolveUser(ResolveFieldContext context) {
@@ -95,5 +103,13 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users {
 
             return _pubsub.ObservableOnDeleteUser;
         }
+
+        private IObservable<User> SubscribeOnAllEvents(ResolveEventStreamContext context) {
+            var messageContext = context.UserContext.As<MessageHandlingContext>();
+            var email = messageContext.Get<string>("email");
+
+            return _pubsub.ObservableOnAllEvents;
+        }
+
     }
 }
