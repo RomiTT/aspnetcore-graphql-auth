@@ -1,4 +1,5 @@
 using aspnetcore_graphql_auth.GraphQL;
+using aspnetcore_graphql_auth.GraphQL.Schemas.Users;
 using aspnetcore_graphql_auth.Models;
 using GraphQL.Server;
 using GraphQL.Server.Transports.Subscriptions.Abstractions;
@@ -34,8 +35,11 @@ namespace aspnetcore_graphql_auth {
                     HttpContext = httpContext
                 })
                 .AddWebSockets()
-                .AddWebSocketListener()
+                //.AddWebSocketListener()
                 .AddDataLoader();
+
+            services.AddSingleton<UsersPubSub>();
+            services.AddScoped<UsersSchema>();
 
             return services;
         }

@@ -1,5 +1,10 @@
 ﻿using System;
+using aspnetcore_graphql_auth.GraphQL.Schemas.Users;
 using aspnetcore_graphql_auth.Models;
+using GraphQL.Server;
+using GraphQL.Server.Ui.GraphiQL;
+using GraphQL.Server.Ui.Playground;
+using GraphQL.Server.Ui.Voyager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -36,17 +41,25 @@ namespace aspnetcore_graphql_auth {
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
-            if (env.IsDevelopment()) {
-                app.UseDeveloperExceptionPage();
-            }
-            else {
-
-            }
-
             app.UseStaticFiles();
-            app.Run(async(context) => {
-                await context.Response.WriteAsync("Hello World!");
-            });
+            app.UseAuthentication();
+            app.UseWebSockets();
+            app.UseGraphQLWebSockets<UsersSchema>("/graphql");
+            app.UseGraphQL<UsersSchema>("/graphql");
+            if (env.IsDevelopment()) {
+                app.UseDeveloperExceptionPage();                
+                app.UseGraphQLPlayground(new GraphQLPlaygroundOptions() {
+                    Path = "/ui/playground"
+                });
+                app.UseGraphiQLServer(new GraphiQLOptions {
+                    GraphiQLPath = "/ui/graphiql",
+                        GraphQLEndPoint = "/graphql"
+                });
+                app.UseGraphQLVoyager(new GraphQLVoyagerOptions() {
+                    GraphQLEndPoint = "/graphql",
+                        Path = "/ui/voyager"
+                });
+            }
         }
 
         private void InitializeLogger() {

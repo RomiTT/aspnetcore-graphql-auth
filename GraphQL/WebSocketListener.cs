@@ -11,6 +11,7 @@ namespace aspnetcore_graphql_auth.GraphQL {
     public class WebSocketListener : IOperationMessageListener {
         AppSettings _appSettings;
         bool _isAuthenticated = false;
+        string _userEmail;
 
         public WebSocketListener(AppSettings appSettings) {
             _appSettings = appSettings;
@@ -29,6 +30,7 @@ namespace aspnetcore_graphql_auth.GraphQL {
                 }
 
                 _isAuthenticated = true;
+                context.Properties.TryAdd("email", _userEmail);
             }
 
             return Task.FromResult(true);
@@ -44,15 +46,15 @@ namespace aspnetcore_graphql_auth.GraphQL {
 
         protected bool ValidateToken(string token) {
             try {
-                // var result = JWTTokenValidator.ValidateAndDecode(token, _appSettings.Secret);
-                // Claim emailClaim = null;
-                // foreach (var claim in result.Claims) {
-                //     if (claim.Type == ClaimTypes.Email) {
-                //         emailClaim = claim;
-                //         break;
-                //     }
-                // }
-                JWTTokenValidator.ValidateAndDecode(token, _appSettings.Secret);
+                var result = JWTTokenValidator.ValidateAndDecode(token, _appSettings.Secret);
+                Claim emailClaim = null;
+                foreach (var claim in result.Claims) {
+                    if (claim.Type == ClaimTypes.Email || claim.Type == "email") {
+                        emailClaim = claim;
+                        _userEmail = emailClaim.Value;
+                        break;
+                    }
+                }
                 return true;
             }
             catch { }
