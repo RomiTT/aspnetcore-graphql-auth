@@ -55,7 +55,7 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users {
 
             AddField(new EventStreamFieldType {
                 Name = "subscribeOnAllEvents",
-                    Type = typeof(String),
+                    Type = typeof(StringGraphType),
                     Resolver = new FuncFieldResolver<String>(ResolveString),
                     Subscriber = new EventStreamResolver<String>(SubscribeOnAllEvents)
             });
