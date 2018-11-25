@@ -8,6 +8,7 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users {
             AddField(new SignupField(db, appSettings));
             AddField(new LoginField(db, appSettings));
             AddField(new LogoutField(db, appSettings));
+            AddField(new DeleteUserField(db, appSettings));
         }
     }
 }
