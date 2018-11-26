@@ -46,7 +46,13 @@ namespace Bowgum.GraphQL {
 
         protected bool ValidateToken(string token) {
             try {
-                var result = JWTTokenValidator.ValidateAndDecode(token, _appSettings.Secret);
+                var jwtToken = token;
+                var tokens = token.Split(' ');
+                if (tokens.Length == 2) {
+                    jwtToken = tokens[1];
+                }
+
+                var result = JWTTokenValidator.ValidateAndDecode(jwtToken, _appSettings.Secret);
                 Claim emailClaim = null;
                 foreach (var claim in result.Claims) {
                     if (claim.Type == ClaimTypes.Email || claim.Type == "email") {
