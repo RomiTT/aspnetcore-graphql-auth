@@ -30,11 +30,13 @@ namespace aspnetcore_graphql_auth {
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services) {
             var appSettingsSection = Configuration.GetSection("AppSettings");
+            var appSettings = appSettingsSection.Get<AppSettings>();
             services.Configure<AppSettings>(appSettingsSection);
             services.AddCors();
             services.AddMvc();
             services.AddCustomDbContext(Configuration);
             services.AddCustomGraphQL(HostingEnvironment);
+            services.AddCustomAuthentication(appSettings.Secret);
 
             InitializeLogger();
         }
@@ -47,7 +49,7 @@ namespace aspnetcore_graphql_auth {
             app.UseGraphQLWebSockets<UsersSchema>("/graphql");
             app.UseGraphQL<UsersSchema>("/graphql");
             if (env.IsDevelopment()) {
-                app.UseDeveloperExceptionPage();                
+                app.UseDeveloperExceptionPage();
                 app.UseGraphQLPlayground(new GraphQLPlaygroundOptions() {
                     Path = "/ui/playground"
                 });

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using aspnetcore_graphql_auth.GraphQL.Authentication;
 using aspnetcore_graphql_auth.Models;
 using GraphQL.Types;
@@ -16,14 +17,13 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Mutation {
             Name = "logout";
             Type = typeof(StringGraphType);
             Description = "Logout a user.";
-            Arguments = new QueryArguments(
-                new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "email" }
-            );
+
+            this.Authorization();
         }
 
         protected override object ResolveFunction(ResolveFieldContext<object> context) {
-            var email = context.GetArgument<string>("email");
-            var user = _db.Users.Find(email);
+            var userContext = context.UserContext as UserContext;
+            var user = _db.Users.Find(userContext.Email);
             if (user == null) {
                 return "That user does not exist";
             }

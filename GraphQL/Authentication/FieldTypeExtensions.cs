@@ -4,9 +4,9 @@ using GraphQL.Types;
 
 namespace aspnetcore_graphql_auth.GraphQL.Authentication {
     public enum UserRole {
-        NORMAL_USER,
-        POWER_USER,
-        ADMIN_USER
+        NORMAL_USER = 1,
+        POWER_USER = 2,
+        ADMIN_USER = 3
     }
 
     public static class FieldTypeExtensions {
@@ -18,7 +18,7 @@ namespace aspnetcore_graphql_auth.GraphQL.Authentication {
             return type;
         }
 
-        public static bool RequiredAuthorization(this IProvideMetadata type) {
+        public static bool IsRequiredAuthorization(this IProvideMetadata type) {
             var val = type.GetMetadata<string>(AUTHORIZATION);
             return (val != null);
         }
@@ -41,9 +41,9 @@ namespace aspnetcore_graphql_auth.GraphQL.Authentication {
         public static bool HasRole(this IProvideMetadata type, UserRole role) {
             var roles = type.GetMetadata<List<UserRole>>(ROLE);
             if (roles == null)
-                return false;
+                return ((int)role >= (int)UserRole.NORMAL_USER);
 
-            return roles.Any(x => string.Equals(x, role));
+            return roles.Any(x => (int)role >= (int)x);
         }
     }
 }

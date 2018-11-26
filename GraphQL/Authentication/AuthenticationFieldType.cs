@@ -14,27 +14,31 @@ namespace aspnetcore_graphql_auth.GraphQL.Authentication {
                 try {
                     if (TryAuth(context))
                         return ResolveFunction(context);
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     context.Errors.Add(new ExecutionError(e.Message));
                 }
 
-                return (TReturnType) Convert.ChangeType(null, typeof(TReturnType));
+                return (TReturnType)Convert.ChangeType(null, typeof(TReturnType));
             });
         }
 
         protected bool TryAuth(ResolveFieldContext<TSourceType> context) {
-            if (context.FieldDefinition.RequiredAuthorization()) {
-                var httpContext = context.UserContext as HttpContext;
+            if (context.FieldDefinition.IsRequiredAuthorization()) {
+                var userContext = context.UserContext as UserContext;
+                var httpContext = userContext.HttpContext;
+                userContext.Email = null;
+
                 var user = httpContext.User;
                 if (user.Identity.IsAuthenticated == false) {
-                    httpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     context.Errors.Add(new ExecutionError("Unauthorized request.") { Code = "401" });
                     return false;
                 }
 
                 var emailClaim = user.FindFirst(ClaimTypes.Email);
                 if (emailClaim == null) {
-                    httpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     context.Errors.Add(new ExecutionError("Unauthorized request.") { Code = "401" });
                     return false;
                 }
@@ -44,12 +48,15 @@ namespace aspnetcore_graphql_auth.GraphQL.Authentication {
                     var role = (UserRole)Enum.Parse(typeof(UserRole), roleClaim.Value);
                     if (context.FieldDefinition.HasRole(role)) {
                         Log.Logger.Information($"{roleClaim.Value}: {emailClaim.Value}");
-                    } else {
-                        httpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                    }
+                    else {
+                        httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         context.Errors.Add(new ExecutionError("Unauthorized request.") { Code = "401" });
                         return false;
                     }
                 }
+
+                userContext.Email = emailClaim.Value;
             }
 
             return true;

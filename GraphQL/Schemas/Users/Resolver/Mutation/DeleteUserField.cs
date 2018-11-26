@@ -21,6 +21,9 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Mutation {
             Arguments = new QueryArguments(
                 new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "email" }
             );
+
+            this.Authorization();
+            this.AddRole(UserRole.ADMIN_USER);
         }
 
         protected override object ResolveFunction(ResolveFieldContext<object> context) {
