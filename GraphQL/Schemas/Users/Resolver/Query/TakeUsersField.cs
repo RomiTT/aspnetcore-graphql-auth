@@ -1,5 +1,6 @@
 using System.Linq;
 using aspnetcore_graphql_auth.GraphQL.Authentication;
+using aspnetcore_graphql_auth.GraphQL.Schemas.Users.Type.Output;
 using aspnetcore_graphql_auth.Models;
 using GraphQL.Types;
 
@@ -14,7 +15,7 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Query {
             _appSettings = appSettings;
             _pubsub = pubsub;
 
-            Type = typeof(StringGraphType);
+            Type = typeof(ListGraphType<UserType>);
             Name = "takeUsers";
             Description = "Take users.";
             Arguments = new QueryArguments(
