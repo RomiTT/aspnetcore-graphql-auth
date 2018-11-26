@@ -9,10 +9,12 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Mutation {
     public class SignupField : AuthenticationFieldType<object, object> {
         AppDbContext _db;
         AppSettings _appSettings;
+        UsersPubSub _pubsub;
 
-        public SignupField(AppDbContext db, AppSettings appSettings) {
+        public SignupField(AppDbContext db, AppSettings appSettings, UsersPubSub pubsub) {
             _db = db;
             _appSettings = appSettings;
+            _pubsub = pubsub;
 
             Name = "signup";
             Type = typeof(StringGraphType);
@@ -44,6 +46,11 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Mutation {
                 LastName = lastName,
                 Role = (email == "bowgum.kim@gmail.com") ? UserRole.ADMIN_USER : UserRole.NORMAL_USER
             };
+
+            _db.Users.Add(user);
+            _db.SaveChanges();
+            
+            _pubsub.SignupUser(user);
 
             var token = JWTTokenGenerator.Generate(_appSettings.Secret, email, user.Role, DateTime.UtcNow.AddDays(7));
             return token;

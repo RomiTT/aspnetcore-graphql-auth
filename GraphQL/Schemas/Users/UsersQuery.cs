@@ -4,10 +4,10 @@ using GraphQL.Types;
 
 namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users {
     public class UsersQuery : ObjectGraphType {
-        public UsersQuery(AppDbContext db, AppSettings appSettings) {
-            AddField(new TotalNumberOfUsersField(db, appSettings));
-            AddField(new GetUserByEmailField(db, appSettings));
-            AddField(new TakeUsersField(db, appSettings));
+        public UsersQuery(AppDbContext db, AppSettings appSettings, UsersPubSub pubsub) {
+            AddField(new TotalNumberOfUsersField(db, appSettings, pubsub));
+            AddField(new GetUserByEmailField(db, appSettings, pubsub));
+            AddField(new TakeUsersField(db, appSettings, pubsub));
         }
     }
 }

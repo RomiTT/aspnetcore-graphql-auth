@@ -7,17 +7,19 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Query {
     public class TakeUsersField : AuthenticationFieldType<object, object> {
         AppDbContext _db;
         AppSettings _appSettings;
+        UsersPubSub _pubsub;
 
-        public TakeUsersField(AppDbContext db, AppSettings appSettings) {
+        public TakeUsersField(AppDbContext db, AppSettings appSettings, UsersPubSub pubsub) {
             _db = db;
             _appSettings = appSettings;
+            _pubsub = pubsub;
 
             Type = typeof(StringGraphType);
             Name = "takeUsers";
             Description = "Take users.";
             Arguments = new QueryArguments(
-                new QueryArgument<IntGraphType> { Name="offset", DefaultValue=0 },
-                new QueryArgument<NonNullGraphType<IntGraphType>> { Name="count" }
+                new QueryArgument<IntGraphType> { Name = "offset", DefaultValue = 0 },
+                new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "count" }
             );
         }
 

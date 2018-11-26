@@ -4,11 +4,11 @@ using GraphQL.Types;
 
 namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users {
     public class UsersMutation : ObjectGraphType {
-        public UsersMutation(AppDbContext db, AppSettings appSettings) {
-            AddField(new SignupField(db, appSettings));
-            AddField(new LoginField(db, appSettings));
-            AddField(new LogoutField(db, appSettings));
-            AddField(new DeleteUserField(db, appSettings));
+        public UsersMutation(AppDbContext db, AppSettings appSettings, UsersPubSub pubsub) {
+            AddField(new SignupField(db, appSettings, pubsub));
+            AddField(new LoginField(db, appSettings, pubsub));
+            AddField(new LogoutField(db, appSettings, pubsub));
+            AddField(new DeleteUserField(db, appSettings, pubsub));
         }
     }
 }

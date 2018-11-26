@@ -7,10 +7,12 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Query {
     public class GetUserByEmailField : AuthenticationFieldType<object, object> {
         AppDbContext _db;
         AppSettings _appSettings;
+        UsersPubSub _pubsub;
 
-        public GetUserByEmailField(AppDbContext db, AppSettings appSettings) {
+        public GetUserByEmailField(AppDbContext db, AppSettings appSettings, UsersPubSub pubsub) {
             _db = db;
             _appSettings = appSettings;
+            _pubsub = pubsub;
 
             Type = typeof(StringGraphType);
             Name = "getUserByEmail";

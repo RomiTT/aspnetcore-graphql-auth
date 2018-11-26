@@ -8,10 +8,12 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Mutation {
     public class LoginField : AuthenticationFieldType<object, object> {
         AppDbContext _db;
         AppSettings _appSettings;
+        UsersPubSub _pubsub;
 
-        public LoginField(AppDbContext db, AppSettings appSettings) {
+        public LoginField(AppDbContext db, AppSettings appSettings, UsersPubSub pubsub) {
             _db = db;
             _appSettings = appSettings;
+            _pubsub = pubsub;
 
             Name = "login";
             Type = typeof(StringGraphType);
@@ -28,15 +30,17 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Mutation {
 
             var user = _db.Users.Find(email);
             if (user == null) {
-                context.Errors.Add(new ExecutionError("That user does not exist") {Code="LOGIN_FAILED"});
+                context.Errors.Add(new ExecutionError("That user does not exist") { Code = "LOGIN_FAILED" });
                 return null;
             }
 
             var hashedPassword = Hash.Create(password, _appSettings.Secret);
             if (hashedPassword != user.Password) {
-                context.Errors.Add(new ExecutionError("Invalid password") {Code="LOGIN_FAILED"});
+                context.Errors.Add(new ExecutionError("Invalid password") { Code = "LOGIN_FAILED" });
                 return null;
             }
+
+            _pubsub.LoginUser(user);
 
             var token = JWTTokenGenerator.Generate(_appSettings.Secret, email, user.Role, DateTime.UtcNow.AddDays(7));
             return token;

@@ -7,10 +7,12 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Query {
     public class TotalNumberOfUsersField : AuthenticationFieldType<object, object> {
         AppDbContext _db;
         AppSettings _appSettings;
+        UsersPubSub _pubsub;
 
-        public TotalNumberOfUsersField(AppDbContext db, AppSettings appSettings) {
+        public TotalNumberOfUsersField(AppDbContext db, AppSettings appSettings, UsersPubSub pubsub) {
             _db = db;
             _appSettings = appSettings;
+            _pubsub = pubsub;
 
             Type = typeof(IntGraphType);
             Name = "totalNumberOfUsers";

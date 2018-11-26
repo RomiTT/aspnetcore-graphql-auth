@@ -8,10 +8,12 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Mutation {
     public class DeleteUserField : AuthenticationFieldType<object, object> {
         AppDbContext _db;
         AppSettings _appSettings;
+        UsersPubSub _pubsub;
 
-        public DeleteUserField(AppDbContext db, AppSettings appSettings) {
+        public DeleteUserField(AppDbContext db, AppSettings appSettings, UsersPubSub pubsub) {
             _db = db;
             _appSettings = appSettings;
+            _pubsub = pubsub;
 
             Name = "deleteUser";
             Type = typeof(StringGraphType);
@@ -24,7 +26,14 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Mutation {
         protected override object ResolveFunction(ResolveFieldContext<object> context) {
             try {
                 var email = context.GetArgument<string>("email");
-                _db.Users.Remove(new User { Email = email });
+                var user = _db.Users.Find(email);
+                if (user == null) {
+                    return "That user doest not exist";
+                }
+
+                _pubsub.DeleteUser(user);
+                
+                _db.Users.Remove(user);
                 _db.SaveChanges();
             }
             catch (Exception e) {
