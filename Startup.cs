@@ -45,6 +45,11 @@ namespace aspnetcore_graphql_auth {
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
             app.UseStaticFiles();
             app.UseResponseCompression();
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
             app.UseAuthentication();
             app.UseWebSockets();
             app.UseGraphQLWebSockets<UsersSchema>("/graphql");
