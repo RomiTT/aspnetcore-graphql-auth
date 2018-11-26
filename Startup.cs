@@ -39,7 +39,6 @@ namespace aspnetcore_graphql_auth {
             services.AddCustomDbContext(Configuration);
             services.AddCustomGraphQL(HostingEnvironment);
             services.AddCustomAuthentication(appSettings.Secret);
-            //services.AddResponseCompression();
             services.AddResponseCompression(options => {
                 options.Providers.Add<GzipCompressionProvider>();
                 options.EnableForHttps = true;
