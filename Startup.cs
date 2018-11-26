@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using aspnetcore_graphql_auth.GraphQL.Schemas.Users;
 using aspnetcore_graphql_auth.Models;
 using GraphQL.Server;
@@ -8,6 +9,7 @@ using GraphQL.Server.Ui.Voyager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,12 +34,16 @@ namespace aspnetcore_graphql_auth {
             var appSettingsSection = Configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<AppSettings>();
             services.Configure<AppSettings>(appSettingsSection);
-            services.AddResponseCompression();
             services.AddCors();
             services.AddMvc();
             services.AddCustomDbContext(Configuration);
             services.AddCustomGraphQL(HostingEnvironment);
             services.AddCustomAuthentication(appSettings.Secret);
+            //services.AddResponseCompression();
+            services.AddResponseCompression(options => {
+                options.Providers.Add<GzipCompressionProvider>();
+                options.EnableForHttps = true;
+            });
 
             InitializeLogger();
         }
@@ -48,8 +54,8 @@ namespace aspnetcore_graphql_auth {
             options.DefaultFileNames.Clear();
             options.DefaultFileNames.Add("index.html");
             app.UseDefaultFiles(options);
-            app.UseStaticFiles();
             app.UseResponseCompression();
+            app.UseStaticFiles();
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
@@ -73,6 +79,7 @@ namespace aspnetcore_graphql_auth {
                         Path = "/ui/voyager"
                 });
             }
+            app.UseMvc();
         }
 
         private void InitializeLogger() {
