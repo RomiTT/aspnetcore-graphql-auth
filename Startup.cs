@@ -32,6 +32,7 @@ namespace aspnetcore_graphql_auth {
             var appSettingsSection = Configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<AppSettings>();
             services.Configure<AppSettings>(appSettingsSection);
+            services.AddResponseCompression();
             services.AddCors();
             services.AddMvc();
             services.AddCustomDbContext(Configuration);
@@ -43,6 +44,10 @@ namespace aspnetcore_graphql_auth {
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+            DefaultFilesOptions options = new DefaultFilesOptions();
+            options.DefaultFileNames.Clear();
+            options.DefaultFileNames.Add("index.html");
+            app.UseDefaultFiles(options);
             app.UseStaticFiles();
             app.UseResponseCompression();
             app.UseCors(x => x
