@@ -4,26 +4,21 @@ using aspnetcore_graphql_auth.Models;
 using GraphQL.Types;
 
 namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Query {
-    public class GetUserByEmailField : AuthenticationFieldType<object, object> {
+    public class TotalNumberOfUsersField : AuthenticationFieldType<object, object> {
         AppDbContext _db;
         AppSettings _appSettings;
 
-        public GetUserByEmailField(AppDbContext db, AppSettings appSettings) {
+        public TotalNumberOfUsersField(AppDbContext db, AppSettings appSettings) {
             _db = db;
             _appSettings = appSettings;
 
-            Type = typeof(StringGraphType);
+            Type = typeof(IntGraphType);
             Name = "getUserByEmail";
             Description = "Get a user by email";
-            Arguments = new QueryArguments(
-                new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "email" }
-            );
         }
 
         protected override object ResolveFunction(ResolveFieldContext<object> context) {
-            var email = context.GetArgument<string>("email");
-            var query = _db.Users.Where(u => u.Email == email);
-            return query;
+            return _db.Users.Count();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Mutation {
         }
 
         protected override object ResolveFunction(ResolveFieldContext<object> context) {
-            return null;
+            return "Logged out";
         }
     }
 }
