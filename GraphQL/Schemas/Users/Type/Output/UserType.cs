@@ -9,6 +9,7 @@ namespace Bowgum.GraphQL.Schemas.Users.Type.Output {
             Field(x => x.FirstName).Description("First name of the User.");
             Field(x => x.LastName).Description("Last name of the User.");
             Field(x => x.Role, type : typeof(UserRoleEnumType)).Description("The role of the User.");
+            Field(x => x.Token).Description("JWT token");
         }
     }
 }

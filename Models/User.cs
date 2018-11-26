@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Bowgum.GraphQL.Authentication;
 
 namespace Bowgum.Models {
@@ -9,6 +10,8 @@ namespace Bowgum.Models {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public UserRole Role { get; set; }
-        //public string Token { get; set; }
+
+        [NotMapped]
+        public string Token { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using Bowgum.GraphQL.Authentication;
+using Bowgum.GraphQL.Schemas.Users.Type.Output;
 using Bowgum.Models;
 using GraphQL;
 using GraphQL.Types;
@@ -16,7 +17,7 @@ namespace Bowgum.GraphQL.Schemas.Users.Resolver.Mutation {
             _pubsub = pubsub;
 
             Name = "login";
-            Type = typeof(StringGraphType);
+            Type = typeof(UserType);
             Description = "Login a user.";
             Arguments = new QueryArguments(
                 new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "email" },
@@ -42,8 +43,8 @@ namespace Bowgum.GraphQL.Schemas.Users.Resolver.Mutation {
 
             _pubsub.LoginUser(user);
 
-            var token = JWTTokenGenerator.Generate(_appSettings.Secret, email, user.Role, DateTime.UtcNow.AddDays(7));
-            return token;
+            user.Token = JWTTokenGenerator.Generate(_appSettings.Secret, email, user.Role, DateTime.UtcNow.AddDays(7));
+            return user;
         }
     }
 }
