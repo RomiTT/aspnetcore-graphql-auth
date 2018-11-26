@@ -13,8 +13,8 @@ namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Query {
             _appSettings = appSettings;
 
             Type = typeof(IntGraphType);
-            Name = "getUserByEmail";
-            Description = "Get a user by email";
+            Name = "totalNumberOfUsers";
+            Description = "Total number of users";
         }
 
         protected override object ResolveFunction(ResolveFieldContext<object> context) {
