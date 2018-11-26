@@ -1,7 +1,7 @@
-using aspnetcore_graphql_auth.Models;
+using Bowgum.Models;
 using GraphQL.Types;
 
-namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Type.Output {
+namespace Bowgum.GraphQL.Schemas.Users.Type.Output {
     public class UsersEventType : ObjectGraphType<UsersEvent> {
         public UsersEventType() {
             Name = "UsersEvent";

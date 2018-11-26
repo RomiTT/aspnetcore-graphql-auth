@@ -1,4 +1,4 @@
-namespace aspnetcore_graphql_auth {
+namespace Bowgum {
     public class AppSettings {
         public string Secret { get; set; }
     }

@@ -1,8 +1,8 @@
 using System;
-using aspnetcore_graphql_auth.GraphQL.Authentication;
+using Bowgum.GraphQL.Authentication;
 using Microsoft.EntityFrameworkCore;
 
-namespace aspnetcore_graphql_auth.Models {
+namespace Bowgum.Models {
     public class AppDbContext : DbContext {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

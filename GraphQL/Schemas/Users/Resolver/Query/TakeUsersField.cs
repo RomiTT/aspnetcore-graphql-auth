@@ -1,10 +1,10 @@
 using System.Linq;
-using aspnetcore_graphql_auth.GraphQL.Authentication;
-using aspnetcore_graphql_auth.GraphQL.Schemas.Users.Type.Output;
-using aspnetcore_graphql_auth.Models;
+using Bowgum.GraphQL.Authentication;
+using Bowgum.GraphQL.Schemas.Users.Type.Output;
+using Bowgum.Models;
 using GraphQL.Types;
 
-namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Query {
+namespace Bowgum.GraphQL.Schemas.Users.Resolver.Query {
     public class TakeUsersField : AuthenticationFieldType<object, object> {
         AppDbContext _db;
         AppSettings _appSettings;

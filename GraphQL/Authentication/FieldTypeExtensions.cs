@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GraphQL.Types;
 
-namespace aspnetcore_graphql_auth.GraphQL.Authentication {
+namespace Bowgum.GraphQL.Authentication {
     public enum UserRole {
         NORMAL_USER = 1,
         POWER_USER = 2,

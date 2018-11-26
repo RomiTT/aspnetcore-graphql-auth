@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using aspnetcore_graphql_auth.GraphQL.Authentication;
+using Bowgum.GraphQL.Authentication;
 
-namespace aspnetcore_graphql_auth.Models {
+namespace Bowgum.Models {
     public class User {
         [Key]
         public string Email { get; set; }

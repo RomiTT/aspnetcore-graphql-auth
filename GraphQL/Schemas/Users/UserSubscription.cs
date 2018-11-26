@@ -1,14 +1,14 @@
 using System;
 using System.Reactive.Linq;
-using aspnetcore_graphql_auth.GraphQL.Schemas.Users.Type.Output;
-using aspnetcore_graphql_auth.Models;
+using Bowgum.GraphQL.Schemas.Users.Type.Output;
+using Bowgum.Models;
 using GraphQL;
 using GraphQL.Resolvers;
 using GraphQL.Server.Transports.Subscriptions.Abstractions;
 using GraphQL.Subscription;
 using GraphQL.Types;
 
-namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users {
+namespace Bowgum.GraphQL.Schemas.Users {
     public class UsersEvent {
         public string EventName { get; set; }
         public User User { get; set; }

@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace aspnetcore_graphql_auth.GraphQL.Authentication {
+namespace Bowgum.GraphQL.Authentication {
     public class Hash {
         public static string Create(string value, string salt) {
             var valueBytes = KeyDerivation.Pbkdf2(

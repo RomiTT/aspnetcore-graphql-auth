@@ -1,9 +1,9 @@
 using System;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using aspnetcore_graphql_auth.Models;
+using Bowgum.Models;
 
-namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users {
+namespace Bowgum.GraphQL.Schemas.Users {
     public class UsersPubSub {
         private readonly Subject<User> _subjectOnSignup = new Subject<User>();
         private readonly Subject<User> _subjectOnLogin = new Subject<User>();

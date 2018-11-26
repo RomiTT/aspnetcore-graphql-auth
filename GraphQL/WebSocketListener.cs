@@ -1,13 +1,13 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
-using aspnetcore_graphql_auth.GraphQL.Authentication;
+using Bowgum.GraphQL.Authentication;
 using GraphQL.Server;
 using GraphQL.Server.Transports.Subscriptions.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 
-namespace aspnetcore_graphql_auth.GraphQL {
+namespace Bowgum.GraphQL {
     public class WebSocketListener : IOperationMessageListener {
         AppSettings _appSettings;
         bool _isAuthenticated = false;

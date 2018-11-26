@@ -3,7 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace aspnetcore_graphql_auth.GraphQL.Authentication {
+namespace Bowgum.GraphQL.Authentication {
     public static class JWTTokenValidator {
         public static JwtSecurityToken ValidateAndDecode(string jwt, string secret) {
             var key = Encoding.ASCII.GetBytes(secret);

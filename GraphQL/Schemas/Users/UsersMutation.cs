@@ -1,8 +1,8 @@
-using aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Mutation;
-using aspnetcore_graphql_auth.Models;
+using Bowgum.GraphQL.Schemas.Users.Resolver.Mutation;
+using Bowgum.Models;
 using GraphQL.Types;
 
-namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users {
+namespace Bowgum.GraphQL.Schemas.Users {
     public class UsersMutation : ObjectGraphType {
         public UsersMutation(AppDbContext db, AppSettings appSettings, UsersPubSub pubsub) {
             AddField(new SignupField(db, appSettings, pubsub));

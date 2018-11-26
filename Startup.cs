@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using aspnetcore_graphql_auth.GraphQL.Schemas.Users;
-using aspnetcore_graphql_auth.Models;
+using Bowgum.GraphQL.Schemas.Users;
+using Bowgum.Models;
 using GraphQL.Server;
 using GraphQL.Server.Ui.GraphiQL;
 using GraphQL.Server.Ui.Playground;
@@ -17,7 +17,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 
-namespace aspnetcore_graphql_auth {
+namespace Bowgum {
     public class Startup {
         public Startup(IConfiguration configuration, IHostingEnvironment env) {
             Configuration = configuration;

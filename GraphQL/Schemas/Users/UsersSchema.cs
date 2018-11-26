@@ -1,8 +1,8 @@
-using aspnetcore_graphql_auth.Models;
+using Bowgum.Models;
 using GraphQL.Types;
 using Microsoft.Extensions.Options;
 
-namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users {
+namespace Bowgum.GraphQL.Schemas.Users {
     public class UsersSchema : Schema {
         public UsersSchema(AppDbContext db, IOptions<AppSettings> options, UsersPubSub pubsub) {
             Query = new UsersQuery(db, options.Value, pubsub);

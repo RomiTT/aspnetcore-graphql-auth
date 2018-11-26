@@ -1,10 +1,10 @@
 using System;
-using aspnetcore_graphql_auth.GraphQL.Authentication;
-using aspnetcore_graphql_auth.Models;
+using Bowgum.GraphQL.Authentication;
+using Bowgum.Models;
 using GraphQL;
 using GraphQL.Types;
 
-namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Resolver.Mutation {
+namespace Bowgum.GraphQL.Schemas.Users.Resolver.Mutation {
     public class DeleteUserField : AuthenticationFieldType<object, object> {
         AppDbContext _db;
         AppSettings _appSettings;

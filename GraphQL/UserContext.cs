@@ -1,8 +1,8 @@
 using System.Security.Claims;
-using aspnetcore_graphql_auth.Models;
+using Bowgum.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace aspnetcore_graphql_auth.GraphQL {
+namespace Bowgum.GraphQL {
     public class UserContext {
         public string Email { get; set; }
         public ClaimsPrincipal User { get; set; }

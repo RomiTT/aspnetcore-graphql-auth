@@ -1,8 +1,8 @@
 using System;
-using aspnetcore_graphql_auth.GraphQL.Authentication;
+using Bowgum.GraphQL.Authentication;
 using GraphQL.Types;
 
-namespace aspnetcore_graphql_auth.GraphQL.Schemas.Users.Type.Output {
+namespace Bowgum.GraphQL.Schemas.Users.Type.Output {
     public class UserRoleEnumType : EnumerationGraphType {
         public UserRoleEnumType() {
             Name = "UserRole";

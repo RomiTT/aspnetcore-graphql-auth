@@ -1,7 +1,7 @@
 using System.Text;
-using aspnetcore_graphql_auth.GraphQL;
-using aspnetcore_graphql_auth.GraphQL.Schemas.Users;
-using aspnetcore_graphql_auth.Models;
+using Bowgum.GraphQL;
+using Bowgum.GraphQL.Schemas.Users;
+using Bowgum.Models;
 using GraphQL.Server;
 using GraphQL.Server.Transports.Subscriptions.Abstractions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace aspnetcore_graphql_auth {
+namespace Bowgum {
     public static class CustomServiceCollectionExtensions {
         public static IGraphQLBuilder AddWebSocketListener(this IGraphQLBuilder builder) {
             builder.Services
