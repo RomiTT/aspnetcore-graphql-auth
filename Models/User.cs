@@ -12,6 +12,6 @@ namespace Bowgum.Models {
         public UserRole Role { get; set; }
 
         [NotMapped]
-        public string Token { get; set; }
+        public string Token { get; set; } = "";
     }
 }
