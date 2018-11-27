@@ -31,11 +31,12 @@ namespace Bowgum.GraphQL.Schemas.Users.Resolver.Mutation {
                 var email = context.GetArgument<string>("email");
                 var user = _db.Users.Find(email);
                 if (user == null) {
-                    return "That user doest not exist";
+                    context.Errors.Add(new ExecutionError("That user does not exist"));
+                    return null;
                 }
 
                 _pubsub.DeleteUser(user);
-                
+
                 _db.Users.Remove(user);
                 _db.SaveChanges();
             }

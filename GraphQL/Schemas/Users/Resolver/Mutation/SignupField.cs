@@ -35,7 +35,7 @@ namespace Bowgum.GraphQL.Schemas.Users.Resolver.Mutation {
             var lastName = context.GetArgument<string>("lastName");
 
             if (_db.Users.Where(u => u.Email == email).Count() > 0) {
-                context.Errors.Add(new ExecutionError("That email exists.") { Code = "SIGNUP_FAILED" });
+                context.Errors.Add(new ExecutionError("That email exists."));
                 return null;
             }
 

@@ -31,13 +31,13 @@ namespace Bowgum.GraphQL.Schemas.Users.Resolver.Mutation {
 
             var user = _db.Users.Find(email);
             if (user == null) {
-                context.Errors.Add(new ExecutionError("That user does not exist") { Code = "LOGIN_FAILED" });
+                context.Errors.Add(new ExecutionError("That user does not exist"));
                 return null;
             }
 
             var hashedPassword = Hash.Create(password, _appSettings.Secret);
             if (hashedPassword != user.Password) {
-                context.Errors.Add(new ExecutionError("Invalid password") { Code = "LOGIN_FAILED" });
+                context.Errors.Add(new ExecutionError("Invalid password"));
                 return null;
             }
 

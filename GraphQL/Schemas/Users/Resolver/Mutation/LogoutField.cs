@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Bowgum.GraphQL.Authentication;
 using Bowgum.Models;
+using GraphQL;
 using GraphQL.Types;
 
 namespace Bowgum.GraphQL.Schemas.Users.Resolver.Mutation {
@@ -25,7 +26,8 @@ namespace Bowgum.GraphQL.Schemas.Users.Resolver.Mutation {
             var userContext = context.UserContext as UserContext;
             var user = _db.Users.Find(userContext.Email);
             if (user == null) {
-                return "That user does not exist";
+                context.Errors.Add(new ExecutionError("That user does not exist"));
+                return null;
             }
 
             _pubsub.LogoutUser(user);
