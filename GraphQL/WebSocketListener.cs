@@ -21,7 +21,7 @@ namespace Bowgum.GraphQL {
         public Task BeforeHandleAsync(MessageHandlingContext context) {
             if (context.Message.Type == MessageType.GQL_CONNECTION_INIT) {
                 // Get connectionParams.
-                var token = context.Message.Payload.Value<string>("apollo-token");
+                var token = context.Message.Payload.Value<string>("authorization");
                 if (string.IsNullOrEmpty(token) || !ValidateToken(token)) {
                     _isAuthenticated = false;
                     Log.Logger.Error("Terminate connection because of unauthorized access.");
