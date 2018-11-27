@@ -16,7 +16,7 @@ namespace Bowgum {
     public static class CustomServiceCollectionExtensions {
         public static IGraphQLBuilder AddWebSocketListener(this IGraphQLBuilder builder) {
             builder.Services
-                .AddTransient<IOperationMessageListener, WebSocketListener>();
+                .AddSingleton<IOperationMessageListener, WebSocketListener>();
 
             return builder;
         }
@@ -38,7 +38,7 @@ namespace Bowgum {
                         HttpContext = httpContext
                 })
                 .AddWebSockets()
-                //.AddWebSocketListener()
+                .AddWebSocketListener()
                 .AddDataLoader();
 
             services.AddSingleton<UsersPubSub>();

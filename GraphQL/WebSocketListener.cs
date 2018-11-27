@@ -5,6 +5,7 @@ using GraphQL.Server;
 using GraphQL.Server.Transports.Subscriptions.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace Bowgum.GraphQL {
@@ -13,8 +14,8 @@ namespace Bowgum.GraphQL {
         bool _isAuthenticated = false;
         string _userEmail;
 
-        public WebSocketListener(AppSettings appSettings) {
-            _appSettings = appSettings;
+        public WebSocketListener(IOptions<AppSettings> options) {
+            _appSettings = options.Value;
         }
 
         public Task BeforeHandleAsync(MessageHandlingContext context) {
