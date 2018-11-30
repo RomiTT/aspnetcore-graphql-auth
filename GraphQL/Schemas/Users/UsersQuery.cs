@@ -8,6 +8,7 @@ namespace Bowgum.GraphQL.Schemas.Users {
             AddField(new TotalNumberOfUsersField(db, appSettings, pubsub));
             AddField(new GetUserByEmailField(db, appSettings, pubsub));
             AddField(new TakeUsersField(db, appSettings, pubsub));
+            AddField(new ValidateTokenField(db, appSettings, pubsub));
         }
     }
 }
