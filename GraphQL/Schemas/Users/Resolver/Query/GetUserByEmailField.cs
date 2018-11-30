@@ -20,6 +20,8 @@ namespace Bowgum.GraphQL.Schemas.Users.Resolver.Query {
             Arguments = new QueryArguments(
                 new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "email" }
             );
+
+            this.Authorization();
         }
 
         protected override object ResolveFunction(ResolveFieldContext<object> context) {

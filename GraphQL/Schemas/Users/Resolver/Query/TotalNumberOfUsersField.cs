@@ -17,6 +17,8 @@ namespace Bowgum.GraphQL.Schemas.Users.Resolver.Query {
             Type = typeof(IntGraphType);
             Name = "totalNumberOfUsers";
             Description = "Total number of users";
+
+            this.Authorization();
         }
 
         protected override object ResolveFunction(ResolveFieldContext<object> context) {

@@ -22,6 +22,8 @@ namespace Bowgum.GraphQL.Schemas.Users.Resolver.Query {
                 new QueryArgument<IntGraphType> { Name = "offset", DefaultValue = 0 },
                 new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "count" }
             );
+
+            this.Authorization();
         }
 
         protected override object ResolveFunction(ResolveFieldContext<object> context) {
