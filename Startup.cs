@@ -36,6 +36,7 @@ namespace Bowgum {
             services.Configure<AppSettings>(appSettingsSection);
             services.AddCors();
             services.AddMvc();
+            services.AddMongoDbContext(Configuration);
             services.AddCustomDbContext(Configuration);
             services.AddCustomGraphQL(HostingEnvironment);
             services.AddCustomAuthentication(appSettings.Secret);

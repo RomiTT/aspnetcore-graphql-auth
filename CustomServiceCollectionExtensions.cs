@@ -21,6 +21,11 @@ namespace Bowgum {
             return builder;
         }
 
+        public static IServiceCollection AddMongoDbContext(this IServiceCollection services, IConfiguration config) {
+            services.AddScoped<BooksDbContext>();
+            return services;
+        }
+
         public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration config) {
             // Setup DB Context
             //services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("MemoryDB"));
